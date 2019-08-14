@@ -2,16 +2,68 @@
   "name": "upwordly-helium",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Stanley Sakai",
+    "email": "stanley@stanographer.com <stanley@stanographer.com>",
+    "url": "https://upword.ly"
+  },
+  "build": {
+    "appId": "com.upwordly.helium",
+    "productName": "Upword.ly Helium",
+    "copyright": "Copyright © 2019 ${author}",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
   "dependencies": {
+    "@teamwork/sharedb": "^3.1.0",
+    "electron-is-dev": "^1.1.0",
+    "isomorphic-ws": "^4.0.1",
+    "ot-text": "^1.0.2",
+    "prettier": "^1.18.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1"
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.1.1",
+    "react-scroll": "^1.7.13",
+    "reconnecting-websocket": "^4.1.10"
   },
+  "main": "public/electron.js",
+  "homepage": "./",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "rescripts start",
+    "build": "rescripts build",
+    "test": "rescripts test",
+    "eject": "rescripts eject",
+    "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "postinstall": "electron-builder install-app-deps",
+    "preelectron-pack": "yarn build",
+    "pack-mac": "electron-builder build -m",
+    "pack-win": "electron-builder build -w"
+  },
+  "devDependencies": {
+    "@rescripts/cli": "^0.0.11",
+    "@rescripts/rescript-env": "^0.0.10",
+    "concurrently": "^4.1.1",
+    "electron": "^6.0.2",
+    "electron-builder": "^21.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "typescript": "^3.5.3",
+    "wait-on": "^3.3.0"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,5 +79,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "rescripts": [
+    "env"
+  ]
 }

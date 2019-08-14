@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.prettierrc
+upwordly-helium-v0.1.0.tgz
