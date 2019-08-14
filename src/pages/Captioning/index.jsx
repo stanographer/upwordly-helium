@@ -66,7 +66,7 @@ const Captioning = ({ match }) => {
           <div
             className="captions"
             style={{
-              '-webkit-app-region': 'drag',
+              // '-webkit-app-region': 'drag',
               backgroundColor: context.backgroundColor,
               color: context.color,
               fontFamily: context.fontFamily || 'Courier, monospace',
@@ -82,5 +82,7 @@ const Captioning = ({ match }) => {
     </AppContext.Consumer>
   );
 };
+
+Captioning.propTypes = {};
 
 export default Captioning;

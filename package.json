@@ -1,6 +1,7 @@
 {
   "name": "upwordly-helium",
   "version": "0.1.0",
+  "description": "Allows Upword.ly captions to be superimposed on presentations.",
   "private": true,
   "author": {
     "name": "Stanley Sakai",
@@ -27,13 +28,16 @@
     "electron-is-dev": "^1.1.0",
     "isomorphic-ws": "^4.0.1",
     "ot-text": "^1.0.2",
+    "path": "^0.12.7",
     "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
     "react-scroll": "^1.7.13",
-    "reconnecting-websocket": "^4.1.10"
+    "reconnecting-websocket": "^4.1.10",
+    "url": "^0.11.0"
   },
   "main": "public/electron.js",
   "homepage": "./",
@@ -43,10 +47,12 @@
     "test": "rescripts test",
     "eject": "rescripts eject",
     "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev-win": "concurrently \"yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "yarn build",
-    "pack-mac": "electron-builder build -m",
-    "pack-win": "electron-builder build -w"
+    "pack-m": "yarn build && electron-builder build -m",
+    "pack-w": "yarn build && electron-builder build -w",
+    "pack-mw": "yarn build && electron-builder build -mw"
   },
   "devDependencies": {
     "@rescripts/cli": "^0.0.11",

@@ -23,7 +23,7 @@ function App() {
         .split('&')[0]
         .split('=')[1];
     } catch (err) {
-      return setGlobal({ error: 'Invalid URL. Please try again.' });
+      throw setGlobal({ ...global, error: 'Invalid URL. Please try again.' });
     }
 
     let job = '';
@@ -35,7 +35,7 @@ function App() {
         .split('&')[1]
         .split('=')[1];
     } catch (err) {
-      return setGlobal({ error: 'Invalid URL. Please try again.' });
+      throw setGlobal({ ...global, error: 'Invalid URL. Please try again.' });
     }
 
     return {
