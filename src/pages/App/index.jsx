@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import AppContext from '../../context/appcontext';
 import UrlForm from '../../components/UrlForm';
+const { ipcRenderer } = window.require('electron');
 
 function App() {
   const [global, setGlobal] = useState({});
+
+  useEffect(() => {
+    try {
+      ipcRenderer.send('getPrefs');
+    } catch (err) {
+      console.log('No prefs to get.');
+    }
+  }, []);
+
+  ipcRenderer.on('returnedPrefs', (event, res) => {
+    if (res) {
+      setGlobal(res);
+    }
+  });
 
   const onChange = e => {
     if (e.target.name === 'url') {
@@ -38,6 +53,8 @@ function App() {
       throw setGlobal({ ...global, error: 'Invalid URL. Please try again.' });
     }
 
+    ipcRenderer.send('setPrefs', global);
+
     return {
       user,
       job,
@@ -50,7 +67,6 @@ function App() {
         <header className="App-header">
           <p>Type in URL of Upword.ly link to begin.</p>
           <UrlForm onChange={onChange} onSubmit={onSubmit} />
-          <p>{global.url}</p>
           <p>{global.user}</p>
           <p>{global.job}</p>
           <p>{global.error}</p>

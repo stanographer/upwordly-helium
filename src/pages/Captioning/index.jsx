@@ -62,6 +62,7 @@ const Captioning = ({ match }) => {
     <AppContext.Consumer>
       {context => {
         console.log(context);
+        console.log('blaahhh', match.params.user, match.params.job);
         return (
           <div
             className="captions"

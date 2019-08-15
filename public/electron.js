@@ -3,6 +3,9 @@ const { app, dialog, BrowserWindow, ipcMain } = electron;
 
 const path = require('path');
 const isDev = require('electron-is-dev');
+const Store = require('electron-store');
+
+const store = new Store();
 
 let mainWindow;
 let captionWindow;
@@ -48,17 +51,19 @@ function openCaptioning(user, job) {
     width: 900,
     height: 200,
     frame: false,
+    transparent: true,
   });
   captionWindow.loadURL(
     isDev
       ? `http://localhost:3000#/${user}/${job}`
-      : `file://${path.join(__dirname, `../build/index.html#/${user}/${job}`)}`,
+      : `file://${__dirname}/index.html#/${user}/${job}`,
   );
 
   if (process.platform === 'darwin') {
     app.dock.hide();
   }
 
+  // captionWindow.webContents.openDevTools();
   captionWindow.setAlwaysOnTop(true, 'floating');
   captionWindow.setVisibleOnAllWorkspaces(true);
   captionWindow.setFullScreenable(false);
@@ -83,4 +88,12 @@ ipcMain.on('start', (_, arg) => {
   const { user, job } = arg;
 
   openCaptioning(user, job);
+});
+
+ipcMain.on('setPrefs', (_, arg) => {
+  store.set('prefs', arg);
+});
+
+ipcMain.on('getPrefs', event => {
+  event.reply('returnedPrefs', store.get('prefs'));
 });

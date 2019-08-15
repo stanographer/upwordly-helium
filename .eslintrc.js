@@ -3,6 +3,7 @@ module.exports = {
     'airbnb',
     'prettier',
     'prettier/react',
+    'plugin:jest/all',
   ],
   'plugins': [
     'react',
@@ -11,6 +12,11 @@ module.exports = {
     'react-hooks',
   ],
   'rules': {
+    'jest/no-disabled-tests': 'warn',
+    'jest/no-focused-tests': 'error',
+    'jest/no-identical-title': 'error',
+    'jest/prefer-to-have-length': 'warn',
+    'jest/valid-expect': 'error',
     'func-names': [
       'error',
       'never',
