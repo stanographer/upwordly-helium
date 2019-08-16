@@ -7,6 +7,8 @@ export const INITIAL_VALUES = {
   fontFamily: 'Cousine',
   fontSize: 50,
   textBg: 'rgb(30,34,39)',
+  textOutlineColor: '#000',
+  textOutlineWidth: '1px',
   url: 'https://upword.ly/editor?user=stan&job=testingncra',
   user: '',
 };

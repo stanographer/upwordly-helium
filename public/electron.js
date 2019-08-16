@@ -41,7 +41,14 @@ function createWindow() {
 
 function openCaptioning(user, job, global) {
   const makeQueries = styles => {
-    const { backgroundColor, color, fontSize, textBg } = styles;
+    const {
+      backgroundColor,
+      color,
+      fontSize,
+      textBg,
+      textOutlineColor,
+      textOutlineWidth,
+    } = styles;
 
     const signGen = () => {
       let count = -1;
@@ -70,6 +77,18 @@ function openCaptioning(user, job, global) {
 
     if (textBg !== undefined) {
       string = string.concat(`${sign()}textBg=${styles.textBg}`);
+    }
+
+    if (textOutlineColor !== undefined) {
+      string = string.concat(
+        `${sign()}textOutlineColor=${styles.textOutlineColor}`,
+      );
+    }
+
+    if (textOutlineWidth !== undefined) {
+      string = string.concat(
+        `${sign()}textOutlineWidth=${styles.textOutlineWidth}`,
+      );
     }
 
     return string;

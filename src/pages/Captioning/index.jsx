@@ -89,6 +89,10 @@ const Captioning = ({ location, match }) => {
         color: `#${styleProps.color}` || '#fffce1',
         fontFamily: `#${styleProps.fontFamily}` || 'Courier New, monospace',
         fontSize: `${styleProps.fontSize}pt` || '20pt',
+        '-webkit-text-stroke-width':
+          `${styleProps.textOutlineWidth}px` || '0px',
+        '-webkit-text-stroke-color':
+          `#${styleProps.textOutlineColor}` || '#000',
       }}
     >
       <span

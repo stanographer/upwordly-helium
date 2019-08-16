@@ -58,12 +58,20 @@ const UrlForm = ({ onChange, onSubmit }) => {
               value={context.fontSize || ''}
               onChange={e => onChange(e)}
             />
-            <label htmlFor="fontSize">Text Outline</label>
+            <label htmlFor="fontSize">Text Outline Color</label>
             <input
-              id="textOutline"
-              name="textOutline"
+              id="textOutlineColor"
+              name="textOutlineColor"
               type="text"
-              value={context.fontSize || ''}
+              value={context.textOutlineColor || ''}
+              onChange={e => onChange(e)}
+            />
+            <label htmlFor="fontSize">Text Outline Width</label>
+            <input
+              id="textOutlineWidth"
+              name="textOutlineWidth"
+              type="text"
+              value={context.textOutlineWidth || ''}
               onChange={e => onChange(e)}
             />
             <button name="submit" type="submit">
