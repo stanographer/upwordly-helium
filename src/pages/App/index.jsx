@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import AppContext from '../../context/appcontext';
-import UrlForm from '../../components/UrlForm';
+import AppContext, { INITIAL_VALUES } from '../../context/appcontext';
+import UrlForm from '../../components/SettingsForm';
+
 const { ipcRenderer } = window.require('electron');
 
 function App() {
@@ -18,13 +19,22 @@ function App() {
   ipcRenderer.on('returnedPrefs', (event, res) => {
     if (res) {
       setGlobal(res);
+    } else {
+      setGlobal(INITIAL_VALUES);
     }
   });
 
   const onChange = e => {
     if (e.target.name === 'url') {
-      setGlobal({ url: e.target.value.trim() });
+      setGlobal({
+        ...global,
+        url: e.target.value.trim(),
+      });
     }
+    setGlobal({
+      ...global,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const onSubmit = async e => {
@@ -58,6 +68,7 @@ function App() {
     return {
       user,
       job,
+      global,
     };
   };
 
@@ -67,9 +78,12 @@ function App() {
         <header className="App-header">
           <p>Type in URL of Upword.ly link to begin.</p>
           <UrlForm onChange={onChange} onSubmit={onSubmit} />
+
           <p>{global.user}</p>
           <p>{global.job}</p>
           <p>{global.error}</p>
+          <p>{global.url}</p>
+
         </header>
       </div>
     </AppContext.Provider>

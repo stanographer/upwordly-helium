@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 import ShareDB from '../../components/sharedb';
 import Binding from '../../components/sharedb/binding';
-import AppContext from '../../context/appcontext';
 import './Captioning.css';
 
 const onConnect = () => {
@@ -15,13 +14,36 @@ const onDisconnect = () => {
 
 const share = new ShareDB(onConnect, onDisconnect);
 
-const Captioning = ({ match }) => {
+const Captioning = ({ location, match }) => {
   const [text, setText] = useState('');
+  const [styleProps, setStyleProps] = useState({});
 
   useEffect(() => {
+    console.log('location', location);
+    console.log('match', match);
     let document;
     let binding;
     let timer;
+
+    const assignStyles = () => {
+      if (location && location.search) {
+        const queries = location.search.split('?')[1].split('&');
+        let styles = {};
+
+        for (let i = 0; i < queries.length; i += 1) {
+          const props = queries[i].split('=');
+
+          styles = {
+            ...styles,
+            [props[0]]: props[1],
+          };
+        }
+
+        return setStyleProps(styles);
+      }
+    };
+
+    assignStyles();
 
     share.connect('wss://upword.ly/ws').then(() => {
       share.getDoc(match.params.user, match.params.job).then(doc => {
@@ -56,31 +78,27 @@ const Captioning = ({ match }) => {
       document.destroy();
       clearInterval(timer);
     };
-  }, [match.params.user, match.params.job]);
+  }, [location, match]);
 
   return (
-    <AppContext.Consumer>
-      {context => {
-        console.log(context);
-        console.log('blaahhh', match.params.user, match.params.job);
-        return (
-          <div
-            className="captions"
-            style={{
-              // '-webkit-app-region': 'drag',
-              backgroundColor: context.backgroundColor,
-              color: context.color,
-              fontFamily: context.fontFamily || 'Courier, monospace',
-              fontSize: context.fontSize || '18px',
-            }}
-          >
-            <span style={{ backgroundColor: context.textBg }}>
-              {text || ''}
-            </span>
-          </div>
-        );
+    <div
+      className="captions"
+      style={{
+        '-webkit-app-region': 'drag',
+        backgroundColor: `#${styleProps.backgroundColor}` || 'transparent',
+        color: `#${styleProps.color}` || '#fffce1',
+        fontFamily: `#${styleProps.fontFamily}` || 'Courier New, monospace',
+        fontSize: `${styleProps.fontSize}pt` || '20pt',
       }}
-    </AppContext.Consumer>
+    >
+      <span
+        style={{
+          backgroundColor: styleProps.textBg || 'rgb(30,34,39)',
+        }}
+      >
+        {text || ''}
+      </span>
+    </div>
   );
 };
 

@@ -18,7 +18,7 @@ dialog.showErrorBox = function(title, content) {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 500,
+    width: 250,
     height: 500,
     webPreferences: {
       nodeIntegration: true,
@@ -30,9 +30,6 @@ function createWindow() {
       : `file://${path.join(__dirname, '../build/index.html')}`,
   );
   if (isDev) {
-    // Open the DevTools.
-    // BrowserWindow.addDevToolsExtension
-    // ('<location to your react chrome extension>');
     mainWindow.webContents.openDevTools();
   }
   mainWindow.on('closed', () => {
@@ -42,7 +39,42 @@ function createWindow() {
   });
 }
 
-function openCaptioning(user, job) {
+function openCaptioning(user, job, global) {
+  const makeQueries = styles => {
+    const { backgroundColor, color, fontSize, textBg } = styles;
+
+    const signGen = () => {
+      let count = -1;
+
+      return function() {
+        count += 1;
+        return count === 0 ? '?' : '&';
+      };
+    };
+
+    const sign = signGen();
+
+    let string = '';
+
+    if (backgroundColor !== undefined) {
+      string = string.concat(`${sign()}color=${styles.backgroundColor}`);
+    }
+
+    if (color !== undefined) {
+      string = string.concat(`${sign()}color=${styles.color}`);
+    }
+
+    if (fontSize !== undefined) {
+      string = string.concat(`${sign()}fontSize=${styles.fontSize}`);
+    }
+
+    if (textBg !== undefined) {
+      string = string.concat(`${sign()}textBg=${styles.textBg}`);
+    }
+
+    return string;
+  };
+
   captionWindow = new BrowserWindow({
     alwaysOnTop: true,
     webPreferences: {
@@ -55,8 +87,8 @@ function openCaptioning(user, job) {
   });
   captionWindow.loadURL(
     isDev
-      ? `http://localhost:3000#/${user}/${job}`
-      : `file://${__dirname}/index.html#/${user}/${job}`,
+      ? `http://localhost:3000#/${user}/${job}${makeQueries(global)}`
+      : `file://${__dirname}/index.html#/${user}/${job}${makeQueries(global)}`,
   );
 
   if (process.platform === 'darwin') {
@@ -85,9 +117,9 @@ app.on('activate', () => {
 });
 
 ipcMain.on('start', (_, arg) => {
-  const { user, job } = arg;
+  const { user, job, global } = arg;
 
-  openCaptioning(user, job);
+  openCaptioning(user, job, global);
 });
 
 ipcMain.on('setPrefs', (_, arg) => {
